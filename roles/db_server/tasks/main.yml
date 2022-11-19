@@ -4,11 +4,8 @@
       name: docker.io
 
   - name: Adding Docker group to the current user
-    ansible.builtin.user:
-      name: ${USER}
-      shell: /bin/bash
-      group: docker
-      append: yes
+    shell: |
+      usermod -aG docker madiane
 
   - name: Getting the docker image of Ubuntu
     shell: |
@@ -18,7 +15,7 @@
     tags: copy_dockerfile
     copy:
       src: ~/Agpaoa_HOA_11/Docker_file
-      dest: ~
+      dest: /home/madiane
       owner: root
       group: root
       mode: 0644
