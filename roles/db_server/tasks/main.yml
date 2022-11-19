@@ -1,0 +1,36 @@
+  - name: intstall docker
+    tags: docker
+    apt:
+      name: docker.io
+
+  - name: Adding Docker group to the current user
+    ansible.builtin.user:
+      name: ${USER}
+      shell: /bin/bash
+      group: docker
+      append: yes
+
+  - name: Getting the docker image of Ubuntu
+    shell: |
+      docker run ubuntu
+
+  - name: Copying Docker_file in servers
+    tags: copy_dockerfile
+    copy:
+      src: ~/Agpaoa_HOA_11/Docker_file
+      dest: ~
+      owner: root
+      group: root
+      mode: 0644
+
+  - name: Building Dockerfile
+    shell: |
+      cd Docker_file
+      docker build -t cpe232:1.2 .
+ 
+  - name: Checking Docker Images
+    shell: 'docker images'
+    register: command_output
+
+  - debug:
+           var: command_output.stdout_lines
